@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Increíble Blog con Django</title>
+</head>
+<body>
+    <h1>Publicaciones del Blog</h1>
+    <div>
+    {% if user.is_authenticated %}
+        <p>Bienvenido, <strong>{{ user.username }}</strong></p>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Cerrar Sesión</button>
+
+    {% else %}
+        <p>Navegando como invitado.</p>
+        <a href="{% url 'login' %}">🔑 Iniciar Sesión</a>
+        <a href="{% url 'registro' %}">📝 Registrarse</a>
+    {% endif %}
+</div>
+<br>
+    <hr>
+
+    {% for post in posts %}
+        <article>
+            <h2>{{ post.titulo }}</h2>
+            <small>Publicado el: {{ post.fecha_publicacion }}</small>
+            <p>{{ post.contenido|linebreaksbr }}</p>
+        </article>
+        <hr>
+    {% empty %}
+        <p>¡Vaya! Aún no hay publicaciones en el blog.</p>
+    {% endfor %}
+</body>
+</html>
